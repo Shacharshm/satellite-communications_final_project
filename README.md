@@ -97,10 +97,3 @@ The paper presents several key results that can be reproduced using this codebas
 The main configuration parameters can be found in:
 - `src/config/`: Contains configuration files for different aspects of the system
 - Training parameters can be modified in `src/models/train_sac.py`
-
-## Notes
-
-- Training times may vary depending on your hardware
-- The default hyperparameters are set to match those used in the paper
-- For best results, use a GPU for training
-- Some analysis scripts may require significant computational resources
