@@ -1,4 +1,3 @@
-
 import gzip
 import pickle
 from pathlib import Path
@@ -67,7 +66,16 @@ def generate_beampatterns(
             config.config_learner.get_state_args['norm_state'] = False
 
         learned_models[model_name] = {}
-        learned_models[model_name]['model'] = load_model(model_path)
+        try:
+            learned_models[model_name]['model'] = tf.saved_model.load(str(model_path))
+        except Exception as e:
+            print(f"Error loading model {model_name}: {str(e)}")
+            print("Trying alternative loading method...")
+            try:
+                learned_models[model_name]['model'] = load_model(model_path)
+            except Exception as e:
+                print(f"Failed to load model {model_name} with both methods: {str(e)}")
+                raise
         learned_models[model_name]['norm_dict'] = norm_factors
 
     real_time_start = datetime.now()
