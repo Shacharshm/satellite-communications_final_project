@@ -3,9 +3,6 @@ venv/
 env/
 ENV/
 
-# Paper folder
-paper/
-
 # Python bytecode
 __pycache__/
 *.py[cod]

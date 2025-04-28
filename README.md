@@ -28,7 +28,19 @@ git clone [repository-url]
 cd satellite-communications_final_project
 ```
 
-2. Install the required dependencies:
+2. Create and activate a virtual environment:
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Unix or MacOS:
+source venv/bin/activate
+```
+
+3. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
