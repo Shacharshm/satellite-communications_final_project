@@ -1,8 +1,9 @@
-
 import gzip
 import pickle
 import pprint
 from pathlib import Path
+import json
+from datetime import datetime
 
 import numpy as np
 import tensorflow as tf
@@ -38,9 +39,9 @@ config = Config()
 
 model_path = Path(  # SAC only
     config.trained_models_path,
-    '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading',
+    '1_sat_16_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading',
     'single_error',
-    'userwiggle_5000_snap_3.748',
+    'userwiggle_5000_snap_3.926',
     'model',
 )
 
@@ -58,16 +59,74 @@ if 'learned' in plot:
         else:
             config.config_learner.get_state_args['norm_state'] = False
 
-        precoder_network = load_model(model_path)
+        try:
+            precoder_network = tf.saved_model.load(str(model_path))
+        except Exception as e:
+            print(f"Error loading model: {str(e)}")
+            print("Trying alternative loading method...")
+            try:
+                precoder_network = load_model(model_path)
+            except Exception as e:
+                print(f"Failed to load model with both methods: {str(e)}")
+                raise
 
 satellite_manager = SatelliteManager(config)
 user_manager = UserManager(config)
 
+def save_results(results, config, model_path):
+    """Save the beam pattern results to a file."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_dir = Path(config.output_metrics_path, 'beam_pattern_results')
+    results_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Save numerical results
+    results_file = results_dir / f'beam_pattern_results_{timestamp}.json'
+    with open(results_file, 'w') as f:
+        json.dump(results, f, indent=4, cls=NumpyEncoder)
+    
+    # Save plots
+    plots_dir = results_dir / f'plots_{timestamp}'
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    
+    return results_file, plots_dir
+
+class NumpyEncoder(json.JSONEncoder):
+    """Custom JSON encoder for numpy arrays."""
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        if isinstance(obj, np.float32):
+            return float(obj)
+        return super().default(obj)
+
+results = {
+    'config': {
+        'angle_sweep_range': angle_sweep_range.tolist(),
+        'model_path': str(model_path),
+        'timestamp': datetime.now().isoformat()
+    },
+    'iterations': []
+}
+
+# Create results directory first
+results_file, plots_dir = save_results(results, config, model_path)
+
 for iter_id in range(2):
+    iter_data = {
+        'iteration': iter_id,
+        'estimation_errors': {},
+        'sum_rates': {},
+        'user_positions': []
+    }
 
     update_sim(config=config, satellite_manager=satellite_manager, user_manager=user_manager)
     for satellite in satellite_manager.satellites:
-        pprint.pprint(satellite.estimation_errors)
+        # Convert estimation_errors dictionary to a serializable format
+        iter_data['estimation_errors'][f'satellite_{satellite.idx}'] = {
+            k: float(v) if isinstance(v, (np.float32, np.float64)) else v
+            for k, v in satellite.estimation_errors.items()
+        }
+        iter_data['user_positions'] = [float(pos) for pos in satellite.aods_to_users]
 
     # MMSE
     if 'mmse' in plot:
@@ -82,15 +141,15 @@ for iter_id in range(2):
             noise_power_watt=config.noise_power_watt,
         )
 
+        iter_data['sum_rates']['mmse'] = float(sum_rate_mmse)
         plot_beampattern(
             satellite=satellite_manager.satellites[0],
             users=user_manager.users,
             w_precoder=w_mmse,
             plot_title='mmse',
             angle_sweep_range=angle_sweep_range,
+            save_path=str(plots_dir / f'mmse_iter_{iter_id}.png')
         )
-
-        print(f'mmse: {sum_rate_mmse}')
 
     # SLNR
     if 'slnr' in plot:
@@ -113,20 +172,19 @@ for iter_id in range(2):
             noise_power_watt=config.noise_power_watt,
         )
 
+        iter_data['sum_rates']['slnr'] = float(sum_rate_slnr)
         plot_beampattern(
             satellite=satellite_manager.satellites[0],
             users=user_manager.users,
             w_precoder=w_slnr,
             plot_title='slnr',
             angle_sweep_range=angle_sweep_range,
+            save_path=str(plots_dir / f'slnr_iter_{iter_id}.png')
         )
-        print(f'slnr: {sum_rate_slnr}')
 
     # Learned
     if 'learned' in plot:
-
         with tf.device('CPU:0'):
-
             state = config.config_learner.get_state(
                 satellite_manager=satellite_manager,
                 norm_factors=norm_factors,
@@ -145,34 +203,22 @@ for iter_id in range(2):
                 noise_power_watt=config.noise_power_watt,
             )
 
-        print(f'learned: {sum_rate_learned}')
-
+        iter_data['sum_rates']['learned'] = float(sum_rate_learned)
         plot_beampattern(
             satellite=satellite_manager.satellites[0],
             users=user_manager.users,
             w_precoder=w_learned,
             plot_title='learned',
             angle_sweep_range=angle_sweep_range,
+            save_path=str(plots_dir / f'learned_iter_{iter_id}.png')
         )
 
-    # Ones
-    if 'ones' in plot:
-        w_ones = np.ones(w_mmse.shape)
+    results['iterations'].append(iter_data)
 
-        sum_rate_ones = calc_sum_rate(
-            channel_state=satellite_manager.channel_state_information,
-            w_precoder=w_ones,
-            noise_power_watt=config.noise_power_watt,
-        )
+# Save final results
+with open(results_file, 'w') as f:
+    json.dump(results, f, indent=4, cls=NumpyEncoder)
+print(f"Results saved to: {results_file}")
+print(f"Plots saved to: {plots_dir}")
 
-        plot_beampattern(
-            satellite=satellite_manager.satellites[0],
-            users=user_manager.users,
-            w_precoder=w_ones,
-            plot_title='ones',
-            angle_sweep_range=angle_sweep_range,
-        )
-
-        print(f'ones: {sum_rate_ones}')
-
-    plt_show()
+plt_show()

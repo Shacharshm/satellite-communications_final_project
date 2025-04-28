@@ -1,4 +1,3 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors as mpl_colors
@@ -14,6 +13,7 @@ def plot_beampattern(
         w_precoder: np.ndarray,
         angle_sweep_range: np.ndarray or None = None,
         plot_title: str or None = None,
+        save_path: str or None = None,
 ) -> None:
     """Plots beam power toward each user from the point of view of a satellite for a given precoding w_precoder."""
 
@@ -65,3 +65,6 @@ def plot_beampattern(
         ax.set_title(plot_title)
 
     generic_styling(ax=ax)
+
+    if save_path is not None:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')

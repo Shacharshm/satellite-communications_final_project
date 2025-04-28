@@ -1,10 +1,10 @@
-
 from pathlib import Path
 import gzip
 import pickle
 
 import numpy as np
 from keras.models import load_model
+import tensorflow as tf
 
 import src
 from src.analysis.helpers.test_precoder_error_sweep import (
@@ -44,7 +44,16 @@ def test_sac_precoder_error_sweep(
 
         return w_precoder_normalized
 
-    precoder_network = load_model(model_path)
+    try:
+        precoder_network = tf.saved_model.load(str(model_path))
+    except Exception as e:
+        print(f"Error loading model: {str(e)}")
+        print("Trying alternative loading method...")
+        try:
+            precoder_network = load_model(model_path)
+        except Exception as e:
+            print(f"Failed to load model with both methods: {str(e)}")
+            raise
 
     with gzip.open(Path(model_path, '..', 'config', 'norm_dict.gzip')) as file:
         norm_dict = pickle.load(file)
