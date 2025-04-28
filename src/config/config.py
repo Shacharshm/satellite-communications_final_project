@@ -1,4 +1,3 @@
-
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -90,13 +89,18 @@ class Config:
         self.logger = logging.getLogger()
 
         self.project_root_path = Path(__file__).parent.parent.parent
-        self.performance_profile_path = Path(self.project_root_path, 'outputs', 'performance_profiles')
-        self.output_metrics_path = Path(self.project_root_path, 'outputs', 'metrics')
-        self.trained_models_path = Path(self.project_root_path, 'models')
+        self.results_path = Path(self.project_root_path, 'results')
+        self.performance_profile_path = Path(self.results_path, 'performance_profiles')
+        self.output_metrics_path = Path(self.results_path, 'metrics')
+        self.trained_models_path = Path(self.results_path, 'models')
+        self.logs_path = Path(self.results_path, 'logs')
 
+        # Create all necessary directories
+        self.results_path.mkdir(parents=True, exist_ok=True)
         self.performance_profile_path.mkdir(parents=True, exist_ok=True)
         self.output_metrics_path.mkdir(parents=True, exist_ok=True)
         self.trained_models_path.mkdir(parents=True, exist_ok=True)
+        self.logs_path.mkdir(parents=True, exist_ok=True)
 
     def _post_init(
             self,
@@ -118,8 +122,7 @@ class Config:
         )
 
         # Logging
-        self.logfile_path = Path(self.project_root_path, 'outputs', 'logs', 'log.txt')
-        self.logfile_path.parent.mkdir(parents=True, exist_ok=True)
+        self.logfile_path = Path(self.logs_path, 'log.txt')
         self.__logging_setup()
 
         # Collected args
