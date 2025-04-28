@@ -1,4 +1,3 @@
-
 import numpy as np
 import tensorflow as tf
 
@@ -38,6 +37,7 @@ class SoftActorCritic:
         # Gradients are applied on the log value. This way, entropy_scale_alpha is restricted to positive range
         self.log_entropy_scale_alpha = tf.Variable(np.log(entropy_scale_alpha_initial),
                                                    trainable=True, dtype=tf.float32)
+        self.entropy_scale_alpha = tf.exp(self.log_entropy_scale_alpha)
         self.target_entropy = target_entropy
         self.entropy_scale_alpha_optimizer = entropy_scale_optimizer(**entropy_scale_optimizer_args)
 
@@ -220,7 +220,7 @@ class SoftActorCritic:
                     [next_states_value_estimates_1, next_states_value_estimates_2], axis=0)
                 target_q = target_q + self.future_reward_discount_gamma * (
                     next_states_conservative_value_estimates
-                    - tf.exp(self.log_entropy_scale_alpha) * next_action_log_prob_densities
+                    - self.entropy_scale_alpha * next_action_log_prob_densities
                 )
 
             value_network_input_batch = tf.concat([states, actions], axis=1)
@@ -270,7 +270,7 @@ class SoftActorCritic:
                     # pull towards high value:
                     sample_importance_weights * -value_estimate_min
                     # pulls towards high variance - we want to minimize mean log probs -> more uncertainty:
-                    + tf.exp(self.log_entropy_scale_alpha) * policy_action_log_prob_densities
+                    + self.entropy_scale_alpha * policy_action_log_prob_densities
                     + l2_norm_loss  # todo: we can probably move this out of the reduce_mean
                 )
             gradients = tape.gradient(target=policy_loss, sources=network.trainable_variables)
