@@ -92,7 +92,7 @@ class Config:
         self.results_path = Path(self.project_root_path, 'results')
         self.performance_profile_path = Path(self.results_path, 'performance_profiles')
         self.output_metrics_path = Path(self.results_path, 'metrics')
-        self.trained_models_path = Path(self.results_path, 'models')
+        self.trained_models_path = Path(self.project_root_path, 'models')
         self.logs_path = Path(self.results_path, 'logs')
 
         # Create all necessary directories
