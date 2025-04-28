@@ -1,0 +1,47 @@
+# Python virtual environment
+venv/
+env/
+ENV/
+
+# Paper folder
+paper/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Local development settings
+local_settings.py
+
+# Type checking cache
+.mypy_cache/
+
+# TensorFlow specific
+*.ckpt
+*.h5
+*.pb
+*.meta
+*.index
+*.data-00000-of-00001 
