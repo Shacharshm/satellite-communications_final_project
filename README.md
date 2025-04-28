@@ -70,7 +70,7 @@ After training completes, generate the beam patterns:
 python src/analysis/generate_beampatterns.py
 ```
 
-This will create beam pattern visualizations in the `results` directory.
+This will create beam pattern visualizations in the `results\metrics` directory.
 
 ### 3. Running Performance Analysis
 
@@ -103,7 +103,7 @@ python src/plotting/plot_beam_patterns.py
 
 After completing all steps, you should have:
 
-1. Trained model files in `results/models/`
+1. Trained model files in `models/`
 2. Beam pattern visualizations in `results/beam_patterns/`
 3. Performance metrics in `results/metrics/`
 4. Final plots in `results/plots/`
