@@ -45,7 +45,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Recreating Paper Results
+## Reproducing Paper Results
+
+Follow these steps in order to reproduce the paper results:
 
 ### 1. Training the Model
 
@@ -55,21 +57,25 @@ The main training script is located at `src/models/train_sac.py`. To train the m
 python src/models/train_sac.py
 ```
 
-For hyperparameter sweeps:
-```bash
-python src/models/train_sac_sweep.py
-```
+This script will:
+- Train the SAC model with the optimal hyperparameters
+- Save the trained model in the `results/models` directory
+- Generate initial performance metrics
 
 ### 2. Generating Beam Patterns
 
-After training, generate beam patterns using:
+After training completes, generate the beam patterns:
+
 ```bash
 python src/analysis/generate_beampatterns.py
 ```
 
-### 3. Running Analysis
+This will create beam pattern visualizations in the `results` directory.
 
-To analyze model performance:
+### 3. Running Performance Analysis
+
+To analyze the model's performance under different conditions:
+
 ```bash
 # Test beam pattern performance
 python src/analysis/test_beam_pattern.py
@@ -78,9 +84,10 @@ python src/analysis/test_beam_pattern.py
 python src/analysis/run_time_analysis.py
 ```
 
-### 4. Generating Plots
+### 4. Generating Final Plots
 
-Visualize the results using the plotting scripts:
+The final step is to generate the paper's figures:
+
 ```bash
 # Plot training progress
 python src/plotting/plot_training_graph.py
@@ -88,24 +95,28 @@ python src/plotting/plot_training_graph.py
 # Plot error sweep results
 python src/plotting/plot_error_sweep_testing_graph.py
 
-# Plot distance sweep results
-python src/plotting/plot_distance_sweep_testing_graph.py
-
 # Plot beam patterns
 python src/plotting/plot_beam_patterns.py
 ```
 
-## Key Results Reproduction
+## Expected Results
 
-The paper presents several key results that can be reproduced using this codebase:
+After completing all steps, you should have:
 
-1. **Training Performance**: Use `plot_training_graph.py` to visualize the learning curves
-2. **Beam Pattern Analysis**: Use `generate_beampatterns.py` and `plot_beam_patterns.py` to recreate the beam pattern figures
-3. **Error Analysis**: Use `test_beam_pattern.py` and `plot_error_sweep_testing_graph.py` for error analysis
-4. **Distance Analysis**: Use `plot_distance_sweep_testing_graph.py` for distance-based performance analysis
+1. Trained model files in `results/models/`
+2. Beam pattern visualizations in `results/beam_patterns/`
+3. Performance metrics in `results/metrics/`
+4. Final plots in `results/plots/`
 
 ## Configuration
 
-The main configuration parameters can be found in:
-- `src/config/`: Contains configuration files for different aspects of the system
-- Training parameters can be modified in `src/models/train_sac.py`
+The training and analysis parameters are configured in:
+- `src/config/config.py`: Main configuration file with all parameters
+
+## Troubleshooting
+
+If you encounter any issues:
+1. Ensure all dependencies are installed correctly
+2. Check that the virtual environment is activated
+3. Verify that the required directories exist in the `results` folder
+4. Check the logs in `results/logs/training.log` for any errors
