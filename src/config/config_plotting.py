@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -49,7 +48,7 @@ class PlotConfig:
         plt.rc('ytick.minor', visible=True)  # set minor y axis ticks visible
         plt.rc('font', family='serif')  # label fonts, ['serif', >'sans-serif', 'monospace']
 
-        plt.rc('text', usetex=True)  # use inline math for ticks, default: False
+        plt.rc('text', usetex=False)  # use inline math for ticks, default: False
 
     def _pre_init(
             self,
@@ -57,7 +56,7 @@ class PlotConfig:
 
         # paths
         self.project_root_path = Path(__file__).parent.parent.parent
-        self.plots_parent_path = Path(self.project_root_path, 'reports', 'figures')
+        self.plots_parent_path = Path(self.project_root_path, 'results', 'reports', 'figures')
 
         self.plots_parent_path.mkdir(parents=True, exist_ok=True)
 
@@ -132,11 +131,15 @@ def save_figures(
 ) -> None:
     """Save a pyplot fig in multiple formats."""
 
-    plt.savefig(Path(plots_parent_path, 'pgf', f'{plot_name}.pgf'),
-                bbox_inches='tight', pad_inches=padding, transparent=True)
-    plt.savefig(Path(plots_parent_path, 'pdf', f'{plot_name}.pdf'),
+    # Create subdirectories if they don't exist
+    pdf_dir = Path(plots_parent_path, 'pdf')
+    eps_dir = Path(plots_parent_path, 'eps')
+    pdf_dir.mkdir(parents=True, exist_ok=True)
+    eps_dir.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(Path(pdf_dir, f'{plot_name}.pdf'),
                 bbox_inches='tight', pad_inches=padding, dpi=800, transparent=True)
-    plt.savefig(Path(plots_parent_path, 'eps', f'{plot_name}.eps'),
+    plt.savefig(Path(eps_dir, f'{plot_name}.eps'),
                 bbox_inches='tight', pad_inches=padding)
 
 
