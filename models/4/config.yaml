@@ -1,0 +1,6 @@
+ant: 16
+dist: 100000
+error_cos: 0.1
+error_dist: 0.0
+sat: 1
+usr: 3
