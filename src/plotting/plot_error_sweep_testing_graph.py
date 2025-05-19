@@ -87,17 +87,14 @@ if __name__ == '__main__':
 
     data_paths = [
         Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'error_sweep',
-             'testing_mmse_sweep_0.0_0.1_userwiggle_50000.gzip'),
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
+             'testing_mmse_sweep_50000_140000_userwiggle_50000.gzip'),
         Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'error_sweep',
-             'testing_robust_slnr_sweep_0.0_0.1_userwiggle_50000.gzip'),
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
+             'testing_mrc_sweep_50000_140000_userwiggle_0.gzip'),
         Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'error_sweep',
-             'testing_learned1_sweep_0.0_0.1_userwiggle_50000.gzip'),
-        Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'error_sweep',
-             'testing_learned2_sweep_0.0_0.1_userwiggle_50000.gzip'),
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
+             'testing_learned_sweep_50000_140000_userwiggle_50000.gzip'),
     ]
 
     plot_width = 0.99 * plot_cfg.textwidth

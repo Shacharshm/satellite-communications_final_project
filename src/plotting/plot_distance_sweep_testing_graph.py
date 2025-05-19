@@ -1,4 +1,3 @@
-
 import gzip
 import pickle
 
@@ -88,19 +87,17 @@ if __name__ == '__main__':
 
     data_paths = [
         Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'distance_sweep',
-             'testing_mmse_sweep_50000_149999.gzip'),
-
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
+             'testing_mmse_sweep_50000_140000.gzip'),
         Path(cfg.output_metrics_path,
-             'sat_1_ant_16_usr_3_satdist_10000_usrdist_100000', 'distance_sweep',
-             'testing_learned_0.0_error_sweep_50000_149999.gzip'),
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
+             'testing_mrc_sweep_50000_140000.gzip'),
+        Path(cfg.output_metrics_path,
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
+             'testing_learned_sweep_50000_140000.gzip'),
         # Path(cfg.output_metrics_path,
-        #      'sat_2_ant_4_usr_3_satdist_10000_usrdist_1000', 'distance_sweep',
-        #      'testing_sac_error_0.1_userwiggle_30_snap_3.422_sweep_970.0_1029.9899999999454.gzip'),
-        # Path(cfg.output_metrics_path,
-        #      'sat_2_ant_4_usr_3_satdist_10000_usrdist_1000', 'distance_sweep',
-        #      'testing_mrc_sweep_970.0_1029.9899999999454.gzip'),
-
+        #      '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
+        #      'testing_mmse_sweep_50000_140000.gzip'),
     ]
 
     plot_width = 0.99 * plot_cfg.textwidth
