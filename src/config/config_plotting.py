@@ -139,7 +139,7 @@ def save_figures(
 
     plt.savefig(Path(pdf_dir, f'{plot_name}.pdf'),
                 bbox_inches='tight', pad_inches=padding, dpi=800, transparent=True)
-    plt.savefig(Path(eps_dir, f'{plot_name}.eps'),
+    plt.savefig(Path(eps_dir, f'{plot_name}.png'),
                 bbox_inches='tight', pad_inches=padding)
 
 

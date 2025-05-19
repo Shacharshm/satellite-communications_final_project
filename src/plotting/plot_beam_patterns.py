@@ -1,4 +1,3 @@
-
 import gzip
 import pickle
 from pathlib import Path
@@ -196,7 +195,7 @@ if __name__ == '__main__':
     labels = {
         'mmse': 'MMSE',
         'slnr': 'SLNR',
-        'learned_0.0_error': 'abc',
+        'learned_0.0_error': 'Learned',
     }
 
     if list_patterns:
