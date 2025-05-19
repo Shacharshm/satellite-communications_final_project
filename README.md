@@ -47,22 +47,7 @@ pip install -r requirements.txt
 
 ## Reproducing Paper Results
 
-Follow these steps in order to reproduce the paper results:
-
-### 1. Training the Model
-
-The main training script is located at `src/models/train_sac.py`. To train the model:
-
-```bash
-python src/models/train_sac.py
-```
-
-This script will:
-- Train the SAC model with the optimal hyperparameters
-- Save the trained model in the `results/models` directory
-- Generate initial performance metrics
-
-### 2. Generating Beam Patterns
+### 1. Generating Beam Patterns
 
 After training completes, generate the beam patterns:
 
@@ -72,7 +57,7 @@ python src/analysis/generate_beampatterns.py
 
 This will create beam pattern visualizations in the `results\metrics` directory.
 
-### 3. Running Performance Analysis
+### 2. Running Performance Analysis
 
 To analyze the model's performance under different conditions:
 
@@ -82,18 +67,21 @@ python src/analysis/test_beam_pattern.py
 
 # Run time analysis
 python src/analysis/run_time_analysis.py
+
+# Run testing
+python src/analysis/run_tests.py
 ```
 
-### 4. Generating Final Plots
+### 3. Generating Final Plots
 
 The final step is to generate the paper's figures:
 
 ```bash
-# Plot training progress
-python src/plotting/plot_training_graph.py
-
 # Plot error sweep results
 python src/plotting/plot_error_sweep_testing_graph.py
+
+# Plot distance sweep results
+python src/plotting/plot_distance_sweep_testing_graph.py
 
 # Plot beam patterns
 python src/plotting/plot_beam_patterns.py
@@ -103,15 +91,9 @@ python src/plotting/plot_beam_patterns.py
 
 After completing all steps, you should have:
 
-1. Trained model files in `models/`
-2. Beam pattern visualizations in `results/beam_patterns/`
-3. Performance metrics in `results/metrics/`
-4. Final plots in `results/plots/`
-
-## Configuration
-
-The training and analysis parameters are configured in:
-- `src/config/config.py`: Main configuration file with all parameters
+1. Beam pattern visualizations in `results/beam_patterns/`
+2. Performance metrics in `results/metrics/`
+3. Final plots in `results/plots/`
 
 ## Troubleshooting
 
