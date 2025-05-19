@@ -22,7 +22,7 @@ class ConfigSACLearner:
             '_10_ant'
             '_3_usr'
             '_10000_dist'
-            '_0.05_error_on_cos'
+            '_0.0_error_on_cos'
             '_0.1_fading'
         )
 
