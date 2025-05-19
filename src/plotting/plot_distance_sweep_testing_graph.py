@@ -88,29 +88,29 @@ if __name__ == '__main__':
     data_paths = [
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
-             'testing_mmse_sweep_50000_140000.gzip'),
+             'testing_mmse_sweep_75000_120000.gzip'),
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
-             'testing_mrc_sweep_50000_140000.gzip'),
+             'testing_mrc_sweep_75000_120000.gzip'),
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
-             'testing_learned_sweep_50000_140000.gzip'),
-        # Path(cfg.output_metrics_path,
-        #      '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
-        #      'testing_mmse_sweep_50000_140000.gzip'),
+             'testing_learned_sweep_75000_120000.gzip'),
+        Path(cfg.output_metrics_path,
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'distance_sweep',
+             'testing_robust_slnr_sweep_75000_120000.gzip'),
     ]
 
     plot_width = 0.99 * plot_cfg.textwidth
     plot_height = plot_width * 1/3
 
-    plot_legend = ['MMSE', 'SAC1', 'OMA']
-    plot_markerstyle = ['o', 's', '^']
-    plot_colors = [plot_cfg.cp2['blue'], plot_cfg.cp2['magenta'], plot_cfg.cp2['black']]
-    plot_linestyles = ['-', '-', '--']
+    plot_legend = ['MMSE', 'MRC', 'SAC', 'Robust SLNR']
+    plot_markerstyle = ['o', '^', 's', 'x']
+    plot_colors = [plot_cfg.cp2['blue'], plot_cfg.cp2['magenta'], plot_cfg.cp2['black'], plot_cfg.cp2['green']]
+    plot_linestyles = ['-', '-', '--', '-']
 
     plot_distance_sweep_testing_graph(
         paths=data_paths,
-        name='dist_sweep_test_long',
+        name='dist_sweep_75k_120k',
         width=plot_width,
         height=plot_height,
         legend=plot_legend,

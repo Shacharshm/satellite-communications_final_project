@@ -88,26 +88,29 @@ if __name__ == '__main__':
     data_paths = [
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
-             'testing_mmse_sweep_50000_140000_userwiggle_50000.gzip'),
+             'testing_mmse_sweep_0.0_0.18_userwiggle_50000.gzip'),
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
-             'testing_mrc_sweep_50000_140000_userwiggle_0.gzip'),
+             'testing_mrc_sweep_0.0_0.18_userwiggle_0.gzip'),
         Path(cfg.output_metrics_path,
              '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
-             'testing_learned_sweep_50000_140000_userwiggle_50000.gzip'),
+             'testing_learned_sweep_0.0_0.18_userwiggle_0.gzip'),
+        Path(cfg.output_metrics_path,
+             '1_sat_10_ant_3_usr_10000_dist_0.0_error_on_cos_0.1_fading', 'error_sweep',
+             'testing_robust_slnr_sweep_0.0_0.18_userwiggle_0.gzip'),
     ]
 
     plot_width = 0.99 * plot_cfg.textwidth
     plot_height = plot_width * 9 / 20
 
-    plot_legend = ['MMSE', 'SLNR', 'SAC1', 'SAC2']
+    plot_legend = ['MMSE', 'MRC', 'SAC', 'Robust SLNR']
     plot_markerstyle = ['o', '^', 's', 'x']
     plot_colors = [plot_cfg.cp2['blue'], plot_cfg.cp2['black'], plot_cfg.cp2['magenta'], plot_cfg.cp2['green']]
-    plot_linestyles = ['-', '--', '-', '-']
+    plot_linestyles = ['-', '-', '--', '-']
 
     plot_error_sweep_testing_graph(
         paths=data_paths,
-        name='error_sweep_test',
+        name='error_sweep_0_0.18',
         width=plot_width,
         xlabel='Error Bound',
         ylabel='Sum Rate',
